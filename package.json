@@ -1,0 +1,28 @@
+{
+  "name": "BotyRest",
+  "version": "0.0.1",
+  "description": "RestFul API Framework",
+  "main": "./src/app.ts",
+  "scripts": {
+    "tr": "npx tsc --watch",
+    "start": "node ./dist/app.js",
+    "dev": "node --watch ./dist/app.js"
+  },
+  "keywords": [
+    "restful",
+    "rest",
+    "api",
+    "framework",
+    "typescript",
+    "node"
+  ],
+  "author": "Pxndxs",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "fastify": "^4.17.0"
+  }
+}
