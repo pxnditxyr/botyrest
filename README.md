@@ -35,7 +35,7 @@ For running the application in development mode, it's recommended to have two se
 1. To transpile TypeScript files in watch mode.
 
 ```bash
-npm run tr` 
+npm run tr
 ```
 2. To start the development server with file watch.
 
