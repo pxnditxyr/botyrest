@@ -4,7 +4,7 @@
   "description": "RestFul API Framework",
   "main": "./src/app.ts",
   "scripts": {
-    "tr": "npx tsc --watch",
+    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/public/ ./dist && npx tsc --watch",
     "start": "node ./dist/app.js",
     "dev": "node --watch ./dist/app.js"
   },
@@ -23,6 +23,9 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@fastify/middie": "^8.3.0",
+    "@fastify/static": "^6.10.1",
+    "dotenv": "^16.0.3",
     "fastify": "^4.17.0"
   }
 }

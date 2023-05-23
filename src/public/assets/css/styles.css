@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #20212A;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  gap: 1rem;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+p {
+  font-size: 1.5rem;
+}

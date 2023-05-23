@@ -28,6 +28,11 @@ git clone https://github.com/pxnditxyr/botyrest.git
 npm i
 ```
 
+3. Change name of .env.example to .env
+```
+mv .env.example .env
+```
+
 ### Running
 
 For running the application in development mode, it's recommended to have two separate terminal windows running the following commands:
@@ -35,7 +40,7 @@ For running the application in development mode, it's recommended to have two se
 1. To transpile TypeScript files in watch mode.
 
 ```bash
-npm run tr
+npm run build
 ```
 2. To start the development server with file watch.
 

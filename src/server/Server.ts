@@ -1,11 +1,18 @@
 import Fastify, { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
+import fastifyMiddie from '@fastify/middie'
+import fastifyStatic from '@fastify/static'
 
 export class BotyRestServer {
-  public server : FastifyInstance
-  private port : number = 3000
+  private server : FastifyInstance
+  private port : number
 
   constructor () {
-    this.server = Fastify({})
+    this.server = Fastify({
+      logger: true
+    })
+    this.port = Number( process.env.PORT ) || 3000
+    this.middlewares()
+    this.serveStaticPage()
   }
 
   get ( url : string, opts : RouteShorthandOptions, handler : RouteHandlerMethod ) {
@@ -29,10 +36,23 @@ export class BotyRestServer {
       await this.server.listen({ port: this.port })
       const address = this.server.server.address()
       const port = typeof address === 'string' ? address : address?.port
-      console.log( `\tServer listening at ${ port }\n\tPlease visit http://localhost:${ port }/welcome`)
+      console.log( `\tServer listening at ${ port }\n\tPlease visit http://localhost:${ port }` )
     } catch ( error ) {
       this.server.log.error( error )
       process.exit( 1 )
     }
+  }
+
+  private middlewares () {
+    this.server.register( fastifyMiddie )
+    this.server.register( fastifyStatic, {
+      root: `${ __dirname }/../public`,
+    })
+  }
+
+  private serveStaticPage () {
+    this.server.get( '/', ( _request, reply ) => {
+      reply.sendFile( 'index.html' )
+    })
   }
 }

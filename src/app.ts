@@ -1,8 +1,7 @@
-import { RouteShorthandOptions } from 'fastify'
+import dotenv from 'dotenv'
+import { BotyRestServer } from './server'
 
-import { BotyRestServer } from './server/Server'
-import 'reflect-metadata'
+dotenv.config()
 
 const server = new BotyRestServer()
-
 server.start()
