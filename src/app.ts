@@ -1,7 +1,10 @@
 import dotenv from 'dotenv'
-import { BotyRestServer } from './server'
-
 dotenv.config()
 
+import { BotyRestServer } from './server'
+
+
 const server = new BotyRestServer()
+
+
 server.start()

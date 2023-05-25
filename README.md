@@ -33,6 +33,13 @@ npm i
 mv .env.example .env
 ```
 
+### Running Database with Docker in Dev Mode
+
+For running database you need 
+```bash
+docker compose up -d
+```
+
 ### Running
 
 For running the application in development mode, it's recommended to have two separate terminal windows running the following commands:
@@ -53,6 +60,7 @@ To start the production server.
 ```bash
 npm start
 ```
+
 
 ## Built With
 

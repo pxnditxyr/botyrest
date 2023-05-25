@@ -2,15 +2,18 @@ import Fastify, { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } f
 import fastifyMiddie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 
+import { AppDataSource } from '../database'
+import { getEnvironmentVariables } from '../config'
+
 export class BotyRestServer {
   private server : FastifyInstance
   private port : number
 
   constructor () {
-    this.server = Fastify({
-      logger: true
-    })
-    this.port = Number( process.env.PORT ) || 3000
+    const { port } = getEnvironmentVariables()
+    this.port = port
+
+    this.server = Fastify({ logger: true })
     this.middlewares()
     this.serveStaticPage()
   }
@@ -32,6 +35,12 @@ export class BotyRestServer {
   }
   
   async start () {
+    AppDataSource.initialize().then( async () => {
+      await this.initializeServer()
+    } ).catch( error => console.log( error ) )
+  }
+
+  private async initializeServer () {
     try {
       await this.server.listen({ port: this.port })
       const address = this.server.server.address()
@@ -42,6 +51,7 @@ export class BotyRestServer {
       process.exit( 1 )
     }
   }
+
 
   private middlewares () {
     this.server.register( fastifyMiddie )
