@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { DataSource } from 'typeorm'
 import { getEnvironmentVariables } from '../config'
+import { Animal } from '../modules/animals'
 
 const {
   dbHost,
@@ -19,8 +20,8 @@ export const AppDataSource = new DataSource({
     password: dbPass,
     database: dbName,
     synchronize: true,
-    logging: false,
-    entities: [],
+    logging: true,
+    entities: [ Animal ],
     migrations: [],
     subscribers: [],
 })
