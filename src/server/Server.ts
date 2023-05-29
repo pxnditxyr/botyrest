@@ -1,9 +1,12 @@
-import Fastify, { FastifyInstance, RouteHandlerMethod, RouteShorthandOptions } from 'fastify'
+import Fastify, { FastifyInstance, RouteOptions } from 'fastify'
 import fastifyMiddie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 
 import { AppDataSource } from '../database'
 import { getEnvironmentVariables } from '../config'
+
+import { IHttpMethodParams } from '../interfaces'
+
 
 export class BotyRestServer {
   private server : FastifyInstance
@@ -18,19 +21,44 @@ export class BotyRestServer {
     this.serveStaticPage()
   }
 
-  get ( url : string, opts : RouteShorthandOptions, handler : RouteHandlerMethod ) {
+  applyRoutes ( routes : RouteOptions[] ) {
+    routes.forEach( route => this.server.route( route ) )
+  }
+
+  route ( fastifyRoute : RouteOptions ) {
+    this.server.route( fastifyRoute )
+  }
+
+  get ( { url, opts, handler } : IHttpMethodParams ) {
+    if ( !opts ) {
+      this.server.get( url, handler )
+      return
+    }
     this.server.get( url, opts, handler )
   }
 
-  post ( url : string, opts : RouteShorthandOptions, handler : RouteHandlerMethod ) {
+  post ( { url, opts, handler } : IHttpMethodParams ) {
+    if ( !opts ) {
+      this.server.post( url, handler )
+      return
+    }
     this.server.post( url, opts, handler )
   }
 
-  patch ( url : string, opts : RouteShorthandOptions, handler : RouteHandlerMethod ) {
+  patch ( { url, opts, handler } : IHttpMethodParams ) {
+    if ( !opts ) {
+      this.server.patch( url, handler )
+      return
+    }
     this.server.patch( url, opts, handler )
   }
 
-  delete ( url : string, opts : RouteShorthandOptions, handler : RouteHandlerMethod ) {
+  delete ( { url, opts, handler } : IHttpMethodParams ) {
+    if ( !opts ) {
+      this.server.delete( url, handler )
+      return
+    }
+
     this.server.delete( url, opts, handler )
   }
   
