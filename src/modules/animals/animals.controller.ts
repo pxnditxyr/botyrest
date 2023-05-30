@@ -1,4 +1,4 @@
-import { Get, Patch, Post } from '../../decorators'
+import { Delete, Get, Patch, Post } from '../../decorators'
 import { Animal } from './animals.entity'
 import { CreateAnimalDto, UpdateAnimalDto } from './dtos'
 
@@ -48,6 +48,16 @@ export class AnimalsController {
       ...updateAnimalDto
     }
     return this.animals[ animalIndex ]
+  }
+
+  @Delete( 'id' )
+  delete ( id : string ) {
+    console.log( `entrando a delete ${ id }` )
+    const animal = this.animals.find( animal => animal.id === id )
+    if ( !animal ) return { message: 'Animal not found' }
+    const animalIndex = this.animals.indexOf( animal )
+    this.animals.splice( animalIndex, 1 )
+    return { message: 'Animal deleted' }
   }
 
 }
