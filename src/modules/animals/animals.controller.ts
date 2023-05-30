@@ -1,6 +1,6 @@
-import { Get, Post } from '../../decorators'
+import { Get, Patch, Post } from '../../decorators'
 import { Animal } from './animals.entity'
-import { CreateAnimalDto } from './dtos'
+import { CreateAnimalDto, UpdateAnimalDto } from './dtos'
 
 export class AnimalsController {
   [ key : string ]: any
@@ -26,15 +26,28 @@ export class AnimalsController {
 
   @Get( 'id' )
   findOne ( id : string ) {
+    console.log( typeof id )
     const animal = this.animals.find( animal => animal.id === id )
     return animal
   }
 
   @Post()
   create ( createAnimalDto : CreateAnimalDto  ) {
-    console.log( 'createAnimalDto', createAnimalDto )
     this.animals.push( createAnimalDto )
     return createAnimalDto
+  }
+
+  @Patch( 'id' )
+  update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
+    console.log({ id: typeof id, updateAnimalDto })
+    const animal = this.animals.find( animal => animal.id === id )
+    if ( !animal ) return { message: 'Animal not found' }
+    const animalIndex = this.animals.indexOf( animal )
+    this.animals[ animalIndex ] = {
+      ...animal,
+      ...updateAnimalDto
+    }
+    return this.animals[ animalIndex ]
   }
 
 }

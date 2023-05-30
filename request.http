@@ -1,10 +1,18 @@
 GET http://127.0.0.1:3001/animals
-GET http://127.0.0.1:3001/animals/2
+GET http://127.0.0.1:3001/animals/1
 
 POST http://127.0.0.1:3001/animals
 Content-Type: application/json
 
 {
   "name": "Lion",
+  "age": 5
+}
+
+PATCH http://127.0.0.1:3001/animals/1
+Content-Type: application/json
+
+{
+  "name": "Panther",
   "age": 5
 }

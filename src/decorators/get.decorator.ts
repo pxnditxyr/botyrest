@@ -14,6 +14,9 @@ export const Get = ( param? : string ) => {
         const handlerWithParam = async ( request : FastifyRequest, reply : FastifyReply ) => {
           const { id } = request.params as { id : string }
           const result = originalMethod.apply( this, [ id ] )
+          if ( !result ) reply.code( 404 ).send({
+            message: `The ${ modulePath } with id ${ id } was not found`
+          })
           reply.code( 200 ).send( result )
         }
         const routeStruct = {
