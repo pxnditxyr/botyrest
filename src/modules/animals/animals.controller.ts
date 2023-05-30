@@ -1,15 +1,17 @@
-import { Get } from '../../decorators'
+import { Get, Post } from '../../decorators'
+import { Animal } from './animals.entity'
+import { CreateAnimalDto } from './dtos'
 
 export class AnimalsController {
   [ key : string ]: any
     
-  private animals = [
+  private animals : Animal[] = [
     {
-      id: 1,
+      id: '1',
       name: 'dog'
     },
     {
-      id: 2,
+      id: '2',
       name: 'cat'
     }
   ]
@@ -24,7 +26,15 @@ export class AnimalsController {
 
   @Get( 'id' )
   findOne ( id : string ) {
-    const animal = this.animals.find( animal => animal.id === Number( id ) )
+    const animal = this.animals.find( animal => animal.id === id )
     return animal
   }
+
+  @Post()
+  create ( createAnimalDto : CreateAnimalDto  ) {
+    console.log( 'createAnimalDto', createAnimalDto )
+    this.animals.push( createAnimalDto )
+    return createAnimalDto
+  }
+
 }

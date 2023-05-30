@@ -1,2 +1,10 @@
 GET http://127.0.0.1:3001/animals
 GET http://127.0.0.1:3001/animals/2
+
+POST http://127.0.0.1:3001/animals
+Content-Type: application/json
+
+{
+  "name": "Lion",
+  "age": 5
+}

@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyReply, FastifyRequest } from 'fastify'
 
 export const Get = ( param? : string ) => {
   return ( target : any, _propertyKey : string, descriptor : PropertyDescriptor ) => {
@@ -13,7 +13,7 @@ export const Get = ( param? : string ) => {
       if ( param ) {
         const handlerWithParam = async ( request : FastifyRequest, reply : FastifyReply ) => {
           const { id } = request.params as { id : string }
-          const result = originalMethod.apply( this, [ Number( id ) ] )
+          const result = originalMethod.apply( this, [ id ] )
           reply.code( 200 ).send( result )
         }
         const routeStruct = {
