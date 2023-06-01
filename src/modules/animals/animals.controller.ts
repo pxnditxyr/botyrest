@@ -1,63 +1,37 @@
 import { Delete, Get, Patch, Post } from '../../decorators'
-import { Animal } from './animals.entity'
+import { AnimalsService } from './animals.service'
 import { CreateAnimalDto, UpdateAnimalDto } from './dtos'
 
 export class AnimalsController {
   [ key : string ]: any
     
-  private animals : Animal[] = [
-    {
-      id: '1',
-      name: 'dog'
-    },
-    {
-      id: '2',
-      name: 'cat'
-    }
-  ]
+  private readonly animalsService : AnimalsService = new AnimalsService()
 
   constructor (
   ) {}
 
   @Get()
   findAll () {
-    return this.animals
+    return this.animalsService.findAll()
   }
 
   @Get( 'id' )
   findOne ( id : string ) {
-    console.log( typeof id )
-    const animal = this.animals.find( animal => animal.id === id )
-    return animal
+    return this.animalsService.findOne( id )
   }
 
   @Post()
   create ( createAnimalDto : CreateAnimalDto  ) {
-    this.animals.push( createAnimalDto )
-    return createAnimalDto
+    return this.animalsService.create( createAnimalDto )
   }
 
   @Patch( 'id' )
   update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
-    console.log({ id: typeof id, updateAnimalDto })
-    const animal = this.animals.find( animal => animal.id === id )
-    if ( !animal ) return { message: 'Animal not found' }
-    const animalIndex = this.animals.indexOf( animal )
-    this.animals[ animalIndex ] = {
-      ...animal,
-      ...updateAnimalDto
-    }
-    return this.animals[ animalIndex ]
+    return this.animalsService.update( id, updateAnimalDto )
   }
 
   @Delete( 'id' )
   delete ( id : string ) {
-    console.log( `entrando a delete ${ id }` )
-    const animal = this.animals.find( animal => animal.id === id )
-    if ( !animal ) return { message: 'Animal not found' }
-    const animalIndex = this.animals.indexOf( animal )
-    this.animals.splice( animalIndex, 1 )
-    return { message: 'Animal deleted' }
+    return this.animalsService.delete( id )
   }
-
 }
