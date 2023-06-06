@@ -13,15 +13,18 @@ const {
 } = getEnvironmentVariables()
 
 export const AppDataSource = new DataSource({
-    type: dbManager as any,
-    host: dbHost,
-    port: dbPort,
-    username: dbUser,
-    password: dbPass,
-    database: dbName,
-    synchronize: true,
-    logging: false,
-    entities: [ Animal ],
-    migrations: [],
-    subscribers: [],
+  type: dbManager as any,
+  host: dbHost,
+  port: dbPort,
+  username: dbUser,
+  password: dbPass,
+  database: dbName,
+  synchronize: true,
+  logging: false,
+  entities: [
+    // './dist/**/*.entity.{ts,js}'
+    Animal
+  ],
+  migrations: [],
+  subscribers: [],
 })

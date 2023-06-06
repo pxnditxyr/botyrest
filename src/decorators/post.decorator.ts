@@ -20,8 +20,9 @@ export const Post = () => {
         const isValid = bodyProperties.every( bodyProperty => dtoAttributes.includes( bodyProperty ) )
 
         if ( isValid ) {
-          body.id = String( Math.floor( Math.random() * 1000 ) )
-          const result = originalMethod.apply( this, [ body ] )
+          // body.id = String( Math.floor( Math.random() * 1000 ) )
+          console.log( body )
+          const result = await originalMethod.apply( this, [ body ] )
           reply.code( 201 ).send( result )
         } else {
           reply.code( 400 ).send({

@@ -1,13 +1,18 @@
 GET http://127.0.0.1:3001/animals
 
-GET http://127.0.0.1:3001/animals/1
+GET http://127.0.0.1:3001/animals/3cb265bf-dd82-43cc-926e-f46952149db5
 
 POST http://127.0.0.1:3001/animals
 Content-Type: application/json
 
 {
   "name": "Lion",
-  "age": 5
+  "age": 7,
+  "color": "brown",
+  "weight": 200.00,
+  "type": "mammal",
+  "breed": "African Lion",
+  "numberOfLegs": 4
 }
 
 PATCH http://127.0.0.1:3001/animals/1

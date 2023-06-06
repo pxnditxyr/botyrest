@@ -63,12 +63,10 @@ export class BotyRestServer {
   }
   
   async start () {
-    AppDataSource.initialize().then( async () => {
-      await this.initializeServer()
-    } ).catch( error => console.log( error ) )
+    
   }
 
-  private async initializeServer () {
+  async initializeServer () {
     try {
       await this.server.listen({ port: this.port })
       const address = this.server.server.address()

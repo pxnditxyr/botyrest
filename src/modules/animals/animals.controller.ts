@@ -11,27 +11,27 @@ export class AnimalsController {
   ) {}
 
   @Get()
-  findAll () {
-    return this.animalsService.findAll()
+  async findAll () {
+    return await this.animalsService.findAll()
   }
 
   @Get( 'id' )
-  findOne ( id : string ) {
-    return this.animalsService.findOne( id )
+  async findOne ( id : string ) {
+    return await this.animalsService.findOne( id )
   }
 
   @Post()
-  create ( createAnimalDto : CreateAnimalDto  ) {
-    return this.animalsService.create( createAnimalDto )
+  async create ( createAnimalDto : CreateAnimalDto  ) {
+    return await this.animalsService.create( createAnimalDto )
   }
 
   @Patch( 'id' )
-  update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
-    return this.animalsService.update( id, updateAnimalDto )
+  async update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
+    return await this.animalsService.update( id, updateAnimalDto )
   }
 
   @Delete( 'id' )
-  delete ( id : string ) {
-    return this.animalsService.delete( id )
+  async delete ( id : string ) {
+    return await this.animalsService.delete( id )
   }
 }

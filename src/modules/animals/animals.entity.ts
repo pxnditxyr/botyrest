@@ -3,35 +3,35 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateCol
 @Entity()
 export class Animal {
   @PrimaryGeneratedColumn( 'uuid' )
-  id?: string
+  id: string
   
-  @Column({ type: 'text' })
+  @Column( 'text' )
   name: string
 
-  @Column({ type: 'int', width: 4 })
-  age?: number
+  @Column( 'int', { nullable: true } )
+  age: number
 
-  @Column({ type: 'text' })
-  breed?: string
+  @Column( 'text', { nullable: true } )
+  breed: string
 
-  @Column({ type: 'text' })
-  type?: string
+  @Column( 'text', { nullable: true } )
+  type: string
 
-  @Column({ type: 'float' })
-  weight?: number
+  @Column( 'float', { nullable: true } )
+  weight: number
 
-  @Column({ type: 'text' })
-  color?: string
+  @Column( 'text', { nullable: true } )
+  color: string
 
-  @Column({ type: 'int', width: 2 })
-  numberOfLegs?: number
+  @Column( 'int', { nullable: true } )
+  numberOfLegs: number
 
-  @Column({ type: 'boolean', default: true })
-  status?: boolean
+  @Column( 'boolean', { default: true } )
+  status: boolean
 
   @CreateDateColumn()
-  createdAt?: Date
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt?: Date
+  updatedAt: Date
 }
