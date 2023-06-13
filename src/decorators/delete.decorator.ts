@@ -1,4 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { validate as isUUID } from 'uuid'
+import { Logger } from '../logger'
+
+const logger = new Logger( 'Delete' )
 
 export const Delete = ( param : string ) => {
   return ( target : any, _propertyKey : string, descriptor : PropertyDescriptor ) => {
@@ -13,15 +17,30 @@ export const Delete = ( param : string ) => {
       const handler = async ( request : FastifyRequest, reply : FastifyReply ) => {
         const { id } = request.params as { [ key : string ] : string }
 
-        // TODO: validate the id is uuid
-        const isValid = typeof id === 'string'
-
-        if ( isValid ) {
-          const result = originalMethod.apply( this, [ id ] )
-          reply.code( 204 ).send( result )
+        if ( isUUID( id ) ) {
+          try {
+            const result = await originalMethod.apply( this, [ id ] )
+            logger.warn( result )
+            if ( !result ) {
+              reply.code( 404 ).send({
+                message: `The ${ modulePath } with id ${ id } was not found`
+              })
+              return
+            }
+            reply.code( 204 ).send( result )
+          } catch ( error : any ) {
+            logger.error( error )
+            reply.code( 500 ).send({
+              statusCode: 500,
+              message: error.message,
+              error: 'Internal Server Error, please check the logs'
+            })
+          }
         } else {
           reply.code( 400 ).send({
-            message: `The id ${ id } is not valid`
+            statusCode: 400,
+            message: `The id ${ id } is not valid`,
+            error: 'Bad Request'
           })
         }
       }

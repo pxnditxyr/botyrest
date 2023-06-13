@@ -1,6 +1,6 @@
 GET http://127.0.0.1:3001/animals
 
-GET http://127.0.0.1:3001/animals/3cb265bf-dd82-43cc-926e-f46952149db5
+GET http://127.0.0.1:3001/animals/
 
 POST http://127.0.0.1:3001/animals
 Content-Type: application/json
@@ -15,15 +15,15 @@ Content-Type: application/json
   "numberOfLegs": 4
 }
 
-PATCH http://127.0.0.1:3001/animals/1
+PATCH http://127.0.0.1:3001/animals/69796293-b0f7-402c-a80c-9ca273c96978
 Content-Type: application/json
 
 {
-  "name": "Panther",
+  "name": "Pantherxd oaeuoesu",
   "age": 5
 }
 
-DELETE http://127.0.0.1:3001/animals/181
+DELETE http://127.0.0.1:3001/animals/69796293-b0f7-402c-a80c-9ca273c96978
 Content-Type: application/json
 
 {}

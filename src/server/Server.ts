@@ -6,17 +6,19 @@ import { AppDataSource } from '../database'
 import { getEnvironmentVariables } from '../config'
 
 import { IHttpMethodParams } from '../interfaces'
+import { Logger } from '../logger'
 
 
 export class BotyRestServer {
   private server : FastifyInstance
   private port : number
+  private logger : Logger
 
   constructor () {
     const { port } = getEnvironmentVariables()
     this.port = port
-
-    this.server = Fastify({ logger: true })
+    this.logger = new Logger( 'BotyRestServer' )
+    this.server = Fastify({ logger: false })
     this.middlewares()
     this.serveStaticPage()
   }
@@ -71,7 +73,8 @@ export class BotyRestServer {
       await this.server.listen({ port: this.port })
       const address = this.server.server.address()
       const port = typeof address === 'string' ? address : address?.port
-      console.log( `\tServer listening at ${ port }\n\tPlease visit http://localhost:${ port }` )
+      this.logger.log( `Server listening at ${ port }` )
+      this.logger.log( `Please visit http://localhost:${ port }` )
     } catch ( error ) {
       this.server.log.error( error )
       process.exit( 1 )

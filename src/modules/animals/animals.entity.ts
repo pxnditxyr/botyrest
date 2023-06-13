@@ -5,7 +5,7 @@ export class Animal {
   @PrimaryGeneratedColumn( 'uuid' )
   id: string
   
-  @Column( 'text' )
+  @Column( 'text',{ unique: true } )
   name: string
 
   @Column( 'int', { nullable: true } )

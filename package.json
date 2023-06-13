@@ -20,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.16.14",
+    "@types/uuid": "^9.0.2",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "fastify": "^4.17.0",
     "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.16"
+    "typeorm": "^0.3.16",
+    "uuid": "^9.0.0"
   }
 }

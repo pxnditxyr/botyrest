@@ -9,7 +9,11 @@ export class AnimalsService {
   constructor () {}
   
   async findAll () {
-    return await this.animalRepository.find()
+    try {
+      return await this.animalRepository.find()
+    } catch ( error : any ) {
+      throw new Error( error )
+    }
   }
 
   async findOne ( id : string ) {
@@ -21,10 +25,20 @@ export class AnimalsService {
   }
 
   async update ( id : string, animal : CreateAnimalDto ) {
-    return await this.animalRepository.update( id, animal )
+    // do preload
+    const animalToUpdate = await this.animalRepository.preload({
+      id,
+      ...animal
+    })
+    if ( !animalToUpdate ) return
+
+    const animalFromDB = await this.animalRepository.save( animalToUpdate )
+    return animalFromDB
   }
 
   async delete ( id : string ) {
+    const animalToDelete = await this.findOne( id )
+    if ( !animalToDelete ) return
     return await this.animalRepository.delete( id )
   }
 }
