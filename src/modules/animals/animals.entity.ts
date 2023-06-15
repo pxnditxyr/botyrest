@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 export class Animal {
@@ -34,4 +34,14 @@ export class Animal {
 
   @UpdateDateColumn()
   updatedAt: Date
+
+  @BeforeInsert()
+  checkFields () {
+    this.name = this.name.trim().toLowerCase()
+  }
+
+  @BeforeUpdate()
+  checkOptionalFieldsBeforeUpdate () {
+    this.checkFields()
+  }
 }

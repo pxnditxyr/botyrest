@@ -1,4 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { validateOrReject } from 'class-validator'
+import { convertClassValidatorErrors } from '../utils'
+import { response400, response500 } from '../responses'
 import { Logger } from '../logger'
 
 const logger = new Logger( 'Post' )
@@ -12,44 +15,38 @@ export const Post = () => {
     const originalMethod = descriptor.value
     const parameters = Reflect.getMetadata( 'design:paramtypes', target, _propertyKey )
 
-    const createDtoClass = parameters[ 0 ]
-    const createDtoInstance = new createDtoClass()
     descriptor.value = function () {
       const handler = async ( request : FastifyRequest, reply : FastifyReply ) => {
         const body = request.body as typeof createDtoClass
-        const dtoAttributes = Object.getOwnPropertyNames( createDtoInstance )
-        //TODO: check obligatory properties
-        const bodyProperties = Object.getOwnPropertyNames( body )
-        const isValid = bodyProperties.every( bodyProperty => dtoAttributes.includes( bodyProperty ) )
-
-        if ( isValid ) {
-          try {
-            const result = await originalMethod.apply( this, [ body ] )
-            reply.code( 201 ).send( result )
-          } catch ( error : any ) {
-            if ( error.code === '23505' ) {
-              reply.code( 400 ).send({
-                statusCode: 400,
-                message: error.detail,
-                error: 'Bad Request'
-              })
-            }
-            logger.error( error )
-            reply.code( 500 ).send({
-              statusCode: 500,
-              message: error.message,
-              error: 'Internal Server Error, please check the logs'
+        const createDtoClass = parameters[ 0 ]
+        const createDtoInstance = new createDtoClass()
+        const classDtoValidation = Object.assign( createDtoInstance, body )
+        try {
+          await validateOrReject( classDtoValidation )
+        } catch ( errors : any ) {
+          const errorsMessages = convertClassValidatorErrors( errors )
+          reply.code( 400 ).send({
+            ...response400,
+            message: errorsMessages
+          })
+          return
+        }
+        try {
+          const result = await originalMethod.apply( this, [ body ] )
+          reply.code( 201 ).send( result )
+        } catch ( error : any ) {
+          if ( error.code === '23505' ) {
+            reply.code( 400 ).send({
+              ...response400,
+              message: error.detail,
             })
           }
-        } else {
-          reply.code( 400 ).send({
-            // TODO: send the properties that are not defined in the dto class
-            statusCode: 400,
-            message: 'The request body contains invalid properties',
-            error: 'Bad Request'
+          logger.error( error )
+          reply.code( 500 ).send({
+            ...response500,
+            message: error.message,
           })
         }
-
       }
       const routeStruct = {
         method: 'POST',
@@ -58,7 +55,6 @@ export const Post = () => {
       }
       return routeStruct
     }
-    
     return descriptor
   }
 }

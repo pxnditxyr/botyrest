@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { validate as isUUID } from 'uuid'
 import { Logger } from '../logger'
+import { response400, response404, response500 } from '../responses'
 
 const logger = new Logger( 'Delete' )
 
@@ -9,7 +10,6 @@ export const Delete = ( param : string ) => {
 
     const modulePath : string = target.constructor.name.toLowerCase().replace( 'controller', '' )
     const path : string = `/${ modulePath }${ param ? `/:${ param }` : '' }`
-    console.log( 'path', path)
 
     const originalMethod = descriptor.value
 
@@ -23,6 +23,7 @@ export const Delete = ( param : string ) => {
             logger.warn( result )
             if ( !result ) {
               reply.code( 404 ).send({
+                ...response404,
                 message: `The ${ modulePath } with id ${ id } was not found`
               })
               return
@@ -31,16 +32,14 @@ export const Delete = ( param : string ) => {
           } catch ( error : any ) {
             logger.error( error )
             reply.code( 500 ).send({
-              statusCode: 500,
+              ...response500,
               message: error.message,
-              error: 'Internal Server Error, please check the logs'
             })
           }
         } else {
           reply.code( 400 ).send({
-            statusCode: 400,
+            ...response400,
             message: `The id ${ id } is not valid`,
-            error: 'Bad Request'
           })
         }
       }

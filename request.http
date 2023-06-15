@@ -1,29 +1,28 @@
 GET http://127.0.0.1:3001/animals
 
-GET http://127.0.0.1:3001/animals/
+GET http://127.0.0.1:3001/animals/adffed83-56b5-4c85-9458-ec30a5412e39
 
 POST http://127.0.0.1:3001/animals
 Content-Type: application/json
 
 {
-  "name": "Lion",
-  "age": 7,
-  "color": "brown",
+  "name": "Lion6",
+  "age": 10,
+  "color": "yellow",
   "weight": 200.00,
   "type": "mammal",
   "breed": "African Lion",
   "numberOfLegs": 4
 }
 
-PATCH http://127.0.0.1:3001/animals/69796293-b0f7-402c-a80c-9ca273c96978
+PATCH http://127.0.0.1:3001/animals/82d6bd4f-29af-46fd-add6-a8c602279d55
 Content-Type: application/json
 
 {
-  "name": "Pantherxd oaeuoesu",
-  "age": 5
+  "age": "aoetuhs"
 }
 
-DELETE http://127.0.0.1:3001/animals/69796293-b0f7-402c-a80c-9ca273c96978
+DELETE http://127.0.0.1:3001/animals/adffed83-56b5-4c85-9458-ec30a5412e30
 Content-Type: application/json
 
 {}

@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { validate as isUUID } from 'uuid'
 import { Logger } from '../logger'
+import { response400, response404, response500 } from '../responses'
 
 const logger = new Logger( 'Get' )
 
@@ -15,25 +16,31 @@ export const Get = ( param? : string ) => {
     descriptor.value = function () {
       if ( param ) {
         const handlerWithParam = async ( request : FastifyRequest, reply : FastifyReply ) => {
+
           const { id } = request.params as { id : string }
           if ( !isUUID( id ) ) {
             reply.code( 400 ).send({
+              ...response400,
               message: `The id ${ id } is not a valid UUID`
             })
             return
           }
+
           try {
             const result = await originalMethod.apply( this, [ id ] )
-            if ( !result ) reply.code( 404 ).send({
-              message: `The ${ modulePath } with id ${ id } was not found`
-            })
+            if ( !result ) {
+              reply.code( 404 ).send({
+                ...response404,
+                message: `The ${ modulePath } with id ${ id } was not found`
+              })
+              return
+            }
             reply.code( 200 ).send( result )
           } catch ( error : any ) {
             logger.error( error )
             reply.code( 500 ).send({
-              statusCode: 500,
+              ...response500,
               message: error.message,
-              error: 'Internal Server Error, please check the logs'
             })
           }
         }
@@ -45,7 +52,6 @@ export const Get = ( param? : string ) => {
         return routeStruct
       } 
 
-
       const handler = async ( _request : FastifyRequest, reply : FastifyReply ) => {
         try {
           const result = await originalMethod.apply( this, arguments )
@@ -53,13 +59,11 @@ export const Get = ( param? : string ) => {
         } catch ( error : any ) {
           logger.error( error )
           reply.code( 500 ).send({
-            statusCode: 500,
+            ...response500,
             message: error.message,
-            error: 'Internal Server Error, please check the logs'
           })
         }
       }
-      
       const routeStruct = {
         method: 'GET',
         url: path,
@@ -67,7 +71,6 @@ export const Get = ( param? : string ) => {
       }
       return routeStruct
     }
-    
     return descriptor
   }
 }

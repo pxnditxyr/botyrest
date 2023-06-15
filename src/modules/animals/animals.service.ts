@@ -20,15 +20,15 @@ export class AnimalsService {
     return await this.animalRepository.findOneBy({ id })
   }
 
-  async create ( animal : CreateAnimalDto ) {
+  async create ( createAnimalDto : CreateAnimalDto ) {
+    const animal = this.animalRepository.create( createAnimalDto )
     return await this.animalRepository.save( animal )
   }
 
-  async update ( id : string, animal : CreateAnimalDto ) {
-    // do preload
+  async update ( id : string, updateAnimalDto : CreateAnimalDto ) {
     const animalToUpdate = await this.animalRepository.preload({
       id,
-      ...animal
+      ...updateAnimalDto
     })
     if ( !animalToUpdate ) return
 
