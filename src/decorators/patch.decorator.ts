@@ -51,6 +51,7 @@ export const Patch = ( param : string ) => {
             })
             return
           }
+          reply.code( 200 ).send( result )
         } catch ( error : any ) {
           if ( error.code === '23505' ) {
             reply.code( 400 ).send({

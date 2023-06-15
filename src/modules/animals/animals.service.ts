@@ -1,23 +1,21 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../database';
 import { Animal } from './animals.entity';
-import { CreateAnimalDto } from './dtos';
+import { CreateAnimalDto, UpdateAnimalDto } from './dtos';
 
 export class AnimalsService {
-  private readonly animalRepository : Repository<Animal>  = AppDataSource.getRepository( Animal )
+  private readonly animalRepository : Repository<Animal> = AppDataSource.getRepository( Animal )
 
   constructor () {}
   
   async findAll () {
-    try {
-      return await this.animalRepository.find()
-    } catch ( error : any ) {
-      throw new Error( error )
-    }
+    const animals = await this.animalRepository.find()
+    return animals
   }
 
   async findOne ( id : string ) {
-    return await this.animalRepository.findOneBy({ id })
+    const animal = await this.animalRepository.findOneBy({ id })
+    return animal
   }
 
   async create ( createAnimalDto : CreateAnimalDto ) {
@@ -25,15 +23,16 @@ export class AnimalsService {
     return await this.animalRepository.save( animal )
   }
 
-  async update ( id : string, updateAnimalDto : CreateAnimalDto ) {
+  async update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
     const animalToUpdate = await this.animalRepository.preload({
       id,
       ...updateAnimalDto
     })
+
     if ( !animalToUpdate ) return
 
-    const animalFromDB = await this.animalRepository.save( animalToUpdate )
-    return animalFromDB
+    await this.animalRepository.save( animalToUpdate )
+    return animalToUpdate
   }
 
   async delete ( id : string ) {

@@ -2,7 +2,6 @@ import Fastify, { FastifyInstance, RouteOptions } from 'fastify'
 import fastifyMiddie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 
-import { AppDataSource } from '../database'
 import { getEnvironmentVariables } from '../config'
 
 import { IHttpMethodParams } from '../interfaces'
@@ -64,15 +63,12 @@ export class BotyRestServer {
     this.server.delete( url, opts, handler )
   }
   
-  async start () {
-    
-  }
-
   async initializeServer () {
     try {
       await this.server.listen({ port: this.port })
       const address = this.server.server.address()
       const port = typeof address === 'string' ? address : address?.port
+      process.stdout.write( '\x1Bc' )
       this.logger.log( `Server listening at ${ port }` )
       this.logger.log( `Please visit http://localhost:${ port }` )
     } catch ( error ) {
