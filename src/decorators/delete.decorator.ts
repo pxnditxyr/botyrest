@@ -9,7 +9,7 @@ export const Delete = ( param : string ) => {
   return ( target : any, _propertyKey : string, descriptor : PropertyDescriptor ) => {
 
     const modulePath : string = target.constructor.name.toLowerCase().replace( 'controller', '' )
-    const path : string = `/${ modulePath }${ param ? `/:${ param }` : '' }`
+    const path : string = `/${ modulePath }${ param ? `/${ param }` : '' }`
 
     const originalMethod = descriptor.value
 
@@ -20,7 +20,6 @@ export const Delete = ( param : string ) => {
         if ( isUUID( id ) ) {
           try {
             const result = await originalMethod.apply( this, [ id ] )
-            logger.warn( result )
             if ( !result ) {
               reply.code( 404 ).send({
                 ...response404,

@@ -13,8 +13,8 @@ export class AnimalsService {
     return animals
   }
 
-  async findOne ( id : string ) {
-    const animal = await this.animalRepository.findOneBy({ id })
+  async findOne ( term : string ) {
+    const animal = await this.animalRepository.findOneBy({ id: term })
     return animal
   }
 

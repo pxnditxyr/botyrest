@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "declaration": true,
+    "declarationDir": "./dist/types"
   },
   "include": [ "./src/**/*" ]
 }

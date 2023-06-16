@@ -11,7 +11,7 @@ const logger = new Logger( 'Patch' )
 export const Patch = ( param : string ) => {
   return ( target : any, _propertyKey : string, descriptor : PropertyDescriptor ) => {
     const modulePath : string = target.constructor.name.toLowerCase().replace( 'controller', '' )
-    const path : string = `/${ modulePath }${ param ? `/:${ param }` : '' }`
+    const path : string = `/${ modulePath }${ param ? `/${ param }` : '' }`
 
     const originalMethod = descriptor.value
     const parameters = Reflect.getMetadata( 'design:paramtypes', target, _propertyKey )

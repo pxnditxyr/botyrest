@@ -15,9 +15,9 @@ export class AnimalsController {
     return await this.animalsService.findAll()
   }
 
-  @Get( 'id' )
-  async findOne ( id : string ) {
-    return await this.animalsService.findOne( id )
+  @Get( ':term' )
+  async findOne ( term : string ) {
+    return await this.animalsService.findOne( term )
   }
 
   @Post()
@@ -25,12 +25,12 @@ export class AnimalsController {
     return await this.animalsService.create( createAnimalDto )
   }
 
-  @Patch( 'id' )
+  @Patch( ':id' )
   async update ( id : string, updateAnimalDto : UpdateAnimalDto ) {
     return await this.animalsService.update( id, updateAnimalDto )
   }
 
-  @Delete( 'id' )
+  @Delete( ':id' )
   async delete ( id : string ) {
     return await this.animalsService.delete( id )
   }

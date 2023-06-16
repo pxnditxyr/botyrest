@@ -1,12 +1,15 @@
 {
-  "name": "BotyRest",
+  "name": "botyrest",
   "version": "0.0.1",
   "description": "RestFul API Framework",
-  "main": "./src/app.ts",
+  "main": "dist/index",
+  "types": "dist/types/index",
   "scripts": {
-    "build": "rm -rf ./dist && mkdir ./dist && cp -R ./src/public/ ./dist && npx tsc --watch",
-    "start": "node ./dist/app.js",
-    "dev": "node --watch ./dist/app.js"
+    "prepare": "npm run build:prod",
+    "build:dev": "rm -rf ./dist && mkdir ./dist && cp -R ./src/public/ ./dist && npx tsc --watch",
+    "build:prod": "rm -rf ./dist && mkdir ./dist && cp -R ./src/public/ ./dist && npx tsc",
+    "start:prod": "node ./dist/app.js",
+    "start:dev": "node --watch ./dist/app.js"
   },
   "keywords": [
     "restful",

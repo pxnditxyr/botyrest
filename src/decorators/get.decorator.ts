@@ -1,7 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { validate as isUUID } from 'uuid'
 import { Logger } from '../logger'
-import { response400, response404, response500 } from '../responses'
+import { response404, response500 } from '../responses'
 
 const logger = new Logger( 'Get' )
 
@@ -10,28 +9,20 @@ export const Get = ( param? : string ) => {
 
     const modulePath : string = target.constructor.name.toLowerCase().replace( 'controller', '' )
     
-    const path : string = `/${ modulePath }${ param ? `/:${ param }` : '' }`
+    const path : string = `/${ modulePath }${ param ? `/${ param }` : '' }`
 
     const originalMethod = descriptor.value
     descriptor.value = function () {
-      if ( param ) {
+      if ( param && param.includes( ':' ) ) {
         const handlerWithParam = async ( request : FastifyRequest, reply : FastifyReply ) => {
 
-          const { id } = request.params as { id : string }
-          if ( !isUUID( id ) ) {
-            reply.code( 400 ).send({
-              ...response400,
-              message: `The id ${ id } is not a valid UUID`
-            })
-            return
-          }
-
+          const { term } = request.params as { term : string }
           try {
-            const result = await originalMethod.apply( this, [ id ] )
+            const result = await originalMethod.apply( this, [ term ] )
             if ( !result ) {
               reply.code( 404 ).send({
                 ...response404,
-                message: `The ${ modulePath } with id ${ id } was not found`
+                message: `The ${ modulePath } with term ${ term } was not found`
               })
               return
             }

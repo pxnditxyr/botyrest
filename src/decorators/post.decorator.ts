@@ -6,11 +6,11 @@ import { Logger } from '../logger'
 
 const logger = new Logger( 'Post' )
 
-export const Post = () => {
+export const Post = ( param? : string ) => {
   return ( target : any, _propertyKey : string, descriptor : PropertyDescriptor ) => {
 
     const modulePath : string = target.constructor.name.toLowerCase().replace( 'controller', '' )
-    const path : string = `/${ modulePath }`
+    const path : string = `/${ modulePath }${ param ? `/${ param }` : '' }`
 
     const originalMethod = descriptor.value
     const parameters = Reflect.getMetadata( 'design:paramtypes', target, _propertyKey )

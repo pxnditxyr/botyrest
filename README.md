@@ -47,18 +47,26 @@ For running the application in development mode, it's recommended to have two se
 1. To transpile TypeScript files in watch mode.
 
 ```bash
-npm run build
+npm run build:dev
 ```
 2. To start the development server with file watch.
 
 ```bash
-npm run dev 
+npm run start:dev
 ```
 
 For running the application in production mode, run the command
 To start the production server.
+
+1. To transpile TypeScript files.
+
 ```bash
-npm start
+npm run build:prod
+```
+2. To start the server.
+
+```bash
+npm run start:prod
 ```
 
 

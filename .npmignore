@@ -1,0 +1,10 @@
+.git
+postgres
+src
+.env
+.env.example
+.gitignore
+docker-compose.yaml
+package-lock.json
+request.http
+tsconfig.json
