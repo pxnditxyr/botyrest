@@ -1,1 +1,0 @@
-export { initilizeModules } from './initializeModules'
