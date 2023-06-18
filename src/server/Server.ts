@@ -2,20 +2,18 @@ import Fastify, { FastifyInstance, RouteOptions } from 'fastify'
 import fastifyMiddie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 
-import { getEnvironmentVariables } from '../config'
-
 import { IHttpMethodParams } from '../interfaces'
 import { Logger } from '../logger'
+import { IServerConfig } from '../interfaces/server-config.interface'
 
 
 export class BotyRestServer {
   private server : FastifyInstance
-  private port : number
   private logger : Logger
 
-  constructor () {
-    const { port } = getEnvironmentVariables()
-    this.port = port
+  constructor (
+    private serverConfig : IServerConfig
+  ) {
     this.logger = new Logger( 'BotyRestServer' )
     this.server = Fastify({ logger: false })
     this.middlewares()
@@ -65,7 +63,7 @@ export class BotyRestServer {
   
   async initializeServer () {
     try {
-      await this.server.listen({ port: this.port })
+      await this.server.listen({ port: this.serverConfig.port })
       const address = this.server.server.address()
       const port = typeof address === 'string' ? address : address?.port
       process.stdout.write( '\x1Bc' )
