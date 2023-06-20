@@ -1,6 +1,6 @@
 {
   "name": "botyrest",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "RestFul API Framework",
   "main": "dist/index",
   "types": "dist/types/index",
