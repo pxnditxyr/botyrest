@@ -1,6 +1,10 @@
 import Fastify, { FastifyInstance, RouteOptions } from 'fastify'
 import fastifyMiddie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
+import cors from '@fastify/cors'
+import rateLimit from '@fastify/rate-limit'
+import helmet from '@fastify/helmet'
+import formBodyPlugin from '@fastify/formbody'
 
 import { IHttpMethodParams } from '../interfaces'
 import { Logger } from '../logger'
@@ -12,7 +16,7 @@ export class BotyRestServer {
   private logger : Logger
 
   constructor (
-    private serverConfig : IServerConfig
+    private readonly serverConfig : IServerConfig,
   ) {
     this.logger = new Logger( 'BotyRestServer' )
     this.server = Fastify({ logger: false })
@@ -76,9 +80,31 @@ export class BotyRestServer {
   }
 
 
-  private middlewares () {
-    this.server.register( fastifyMiddie )
-    this.server.register( fastifyStatic, {
+  private async middlewares () {
+    await this.server.register( fastifyMiddie )
+    await this.server.register( formBodyPlugin )
+
+    await this.server.register( cors, {
+      origin: this.serverConfig.origin,
+    })
+
+    await this.server.register( helmet )
+    
+    await this.server.register( rateLimit, this.serverConfig.rateLimitOptions || {
+      max: 100,
+      timeWindow: '1 minute'
+    })
+
+    this.server.setNotFoundHandler({
+      preHandler: this.server.rateLimit({
+        max: 4,
+        timeWindow: 500
+      })
+    }, function ( _request, reply ) {
+      reply.code( 404 ).send({ hello: 'world' })
+    })
+
+    await this.server.register( fastifyStatic, {
       root: `${ __dirname }/../public`,
     })
   }
